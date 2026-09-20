@@ -1,0 +1,40 @@
+<script setup lang="ts">
+import { useRoute, useRouter } from 'vue-router'
+import { Activity, BarChart3, FileText, Shield, Users } from 'lucide-vue-next'
+
+const router = useRouter()
+const route = useRoute()
+
+const items = [
+  { name: 'admin-dashboard', label: '后台概览', icon: BarChart3, path: '/admin' },
+  { name: 'admin-users', label: '用户管理', icon: Users, path: '/admin/users' },
+  { name: 'admin-favorites', label: '脚本管理', icon: FileText, path: '/admin/favorites' },
+  { name: 'admin-usage-logs', label: '使用统计', icon: Activity, path: '/admin/usage-logs' },
+]
+
+function navigate(path: string) {
+  router.push(path)
+}
+</script>
+
+<template>
+  <aside class="flex w-64 flex-col border-r bg-card">
+    <div class="flex h-14 items-center gap-2 border-b px-5">
+      <Shield class="h-5 w-5 text-primary" />
+      <span class="font-semibold">YouMedHub 后台</span>
+    </div>
+
+    <nav class="space-y-1 p-3">
+      <button
+        v-for="item in items"
+        :key="item.name"
+        class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors"
+        :class="route.name === item.name ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-muted'"
+        @click="navigate(item.path)"
+      >
+        <component :is="item.icon" class="h-4 w-4" />
+        {{ item.label }}
+      </button>
+    </nav>
+  </aside>
+</template>

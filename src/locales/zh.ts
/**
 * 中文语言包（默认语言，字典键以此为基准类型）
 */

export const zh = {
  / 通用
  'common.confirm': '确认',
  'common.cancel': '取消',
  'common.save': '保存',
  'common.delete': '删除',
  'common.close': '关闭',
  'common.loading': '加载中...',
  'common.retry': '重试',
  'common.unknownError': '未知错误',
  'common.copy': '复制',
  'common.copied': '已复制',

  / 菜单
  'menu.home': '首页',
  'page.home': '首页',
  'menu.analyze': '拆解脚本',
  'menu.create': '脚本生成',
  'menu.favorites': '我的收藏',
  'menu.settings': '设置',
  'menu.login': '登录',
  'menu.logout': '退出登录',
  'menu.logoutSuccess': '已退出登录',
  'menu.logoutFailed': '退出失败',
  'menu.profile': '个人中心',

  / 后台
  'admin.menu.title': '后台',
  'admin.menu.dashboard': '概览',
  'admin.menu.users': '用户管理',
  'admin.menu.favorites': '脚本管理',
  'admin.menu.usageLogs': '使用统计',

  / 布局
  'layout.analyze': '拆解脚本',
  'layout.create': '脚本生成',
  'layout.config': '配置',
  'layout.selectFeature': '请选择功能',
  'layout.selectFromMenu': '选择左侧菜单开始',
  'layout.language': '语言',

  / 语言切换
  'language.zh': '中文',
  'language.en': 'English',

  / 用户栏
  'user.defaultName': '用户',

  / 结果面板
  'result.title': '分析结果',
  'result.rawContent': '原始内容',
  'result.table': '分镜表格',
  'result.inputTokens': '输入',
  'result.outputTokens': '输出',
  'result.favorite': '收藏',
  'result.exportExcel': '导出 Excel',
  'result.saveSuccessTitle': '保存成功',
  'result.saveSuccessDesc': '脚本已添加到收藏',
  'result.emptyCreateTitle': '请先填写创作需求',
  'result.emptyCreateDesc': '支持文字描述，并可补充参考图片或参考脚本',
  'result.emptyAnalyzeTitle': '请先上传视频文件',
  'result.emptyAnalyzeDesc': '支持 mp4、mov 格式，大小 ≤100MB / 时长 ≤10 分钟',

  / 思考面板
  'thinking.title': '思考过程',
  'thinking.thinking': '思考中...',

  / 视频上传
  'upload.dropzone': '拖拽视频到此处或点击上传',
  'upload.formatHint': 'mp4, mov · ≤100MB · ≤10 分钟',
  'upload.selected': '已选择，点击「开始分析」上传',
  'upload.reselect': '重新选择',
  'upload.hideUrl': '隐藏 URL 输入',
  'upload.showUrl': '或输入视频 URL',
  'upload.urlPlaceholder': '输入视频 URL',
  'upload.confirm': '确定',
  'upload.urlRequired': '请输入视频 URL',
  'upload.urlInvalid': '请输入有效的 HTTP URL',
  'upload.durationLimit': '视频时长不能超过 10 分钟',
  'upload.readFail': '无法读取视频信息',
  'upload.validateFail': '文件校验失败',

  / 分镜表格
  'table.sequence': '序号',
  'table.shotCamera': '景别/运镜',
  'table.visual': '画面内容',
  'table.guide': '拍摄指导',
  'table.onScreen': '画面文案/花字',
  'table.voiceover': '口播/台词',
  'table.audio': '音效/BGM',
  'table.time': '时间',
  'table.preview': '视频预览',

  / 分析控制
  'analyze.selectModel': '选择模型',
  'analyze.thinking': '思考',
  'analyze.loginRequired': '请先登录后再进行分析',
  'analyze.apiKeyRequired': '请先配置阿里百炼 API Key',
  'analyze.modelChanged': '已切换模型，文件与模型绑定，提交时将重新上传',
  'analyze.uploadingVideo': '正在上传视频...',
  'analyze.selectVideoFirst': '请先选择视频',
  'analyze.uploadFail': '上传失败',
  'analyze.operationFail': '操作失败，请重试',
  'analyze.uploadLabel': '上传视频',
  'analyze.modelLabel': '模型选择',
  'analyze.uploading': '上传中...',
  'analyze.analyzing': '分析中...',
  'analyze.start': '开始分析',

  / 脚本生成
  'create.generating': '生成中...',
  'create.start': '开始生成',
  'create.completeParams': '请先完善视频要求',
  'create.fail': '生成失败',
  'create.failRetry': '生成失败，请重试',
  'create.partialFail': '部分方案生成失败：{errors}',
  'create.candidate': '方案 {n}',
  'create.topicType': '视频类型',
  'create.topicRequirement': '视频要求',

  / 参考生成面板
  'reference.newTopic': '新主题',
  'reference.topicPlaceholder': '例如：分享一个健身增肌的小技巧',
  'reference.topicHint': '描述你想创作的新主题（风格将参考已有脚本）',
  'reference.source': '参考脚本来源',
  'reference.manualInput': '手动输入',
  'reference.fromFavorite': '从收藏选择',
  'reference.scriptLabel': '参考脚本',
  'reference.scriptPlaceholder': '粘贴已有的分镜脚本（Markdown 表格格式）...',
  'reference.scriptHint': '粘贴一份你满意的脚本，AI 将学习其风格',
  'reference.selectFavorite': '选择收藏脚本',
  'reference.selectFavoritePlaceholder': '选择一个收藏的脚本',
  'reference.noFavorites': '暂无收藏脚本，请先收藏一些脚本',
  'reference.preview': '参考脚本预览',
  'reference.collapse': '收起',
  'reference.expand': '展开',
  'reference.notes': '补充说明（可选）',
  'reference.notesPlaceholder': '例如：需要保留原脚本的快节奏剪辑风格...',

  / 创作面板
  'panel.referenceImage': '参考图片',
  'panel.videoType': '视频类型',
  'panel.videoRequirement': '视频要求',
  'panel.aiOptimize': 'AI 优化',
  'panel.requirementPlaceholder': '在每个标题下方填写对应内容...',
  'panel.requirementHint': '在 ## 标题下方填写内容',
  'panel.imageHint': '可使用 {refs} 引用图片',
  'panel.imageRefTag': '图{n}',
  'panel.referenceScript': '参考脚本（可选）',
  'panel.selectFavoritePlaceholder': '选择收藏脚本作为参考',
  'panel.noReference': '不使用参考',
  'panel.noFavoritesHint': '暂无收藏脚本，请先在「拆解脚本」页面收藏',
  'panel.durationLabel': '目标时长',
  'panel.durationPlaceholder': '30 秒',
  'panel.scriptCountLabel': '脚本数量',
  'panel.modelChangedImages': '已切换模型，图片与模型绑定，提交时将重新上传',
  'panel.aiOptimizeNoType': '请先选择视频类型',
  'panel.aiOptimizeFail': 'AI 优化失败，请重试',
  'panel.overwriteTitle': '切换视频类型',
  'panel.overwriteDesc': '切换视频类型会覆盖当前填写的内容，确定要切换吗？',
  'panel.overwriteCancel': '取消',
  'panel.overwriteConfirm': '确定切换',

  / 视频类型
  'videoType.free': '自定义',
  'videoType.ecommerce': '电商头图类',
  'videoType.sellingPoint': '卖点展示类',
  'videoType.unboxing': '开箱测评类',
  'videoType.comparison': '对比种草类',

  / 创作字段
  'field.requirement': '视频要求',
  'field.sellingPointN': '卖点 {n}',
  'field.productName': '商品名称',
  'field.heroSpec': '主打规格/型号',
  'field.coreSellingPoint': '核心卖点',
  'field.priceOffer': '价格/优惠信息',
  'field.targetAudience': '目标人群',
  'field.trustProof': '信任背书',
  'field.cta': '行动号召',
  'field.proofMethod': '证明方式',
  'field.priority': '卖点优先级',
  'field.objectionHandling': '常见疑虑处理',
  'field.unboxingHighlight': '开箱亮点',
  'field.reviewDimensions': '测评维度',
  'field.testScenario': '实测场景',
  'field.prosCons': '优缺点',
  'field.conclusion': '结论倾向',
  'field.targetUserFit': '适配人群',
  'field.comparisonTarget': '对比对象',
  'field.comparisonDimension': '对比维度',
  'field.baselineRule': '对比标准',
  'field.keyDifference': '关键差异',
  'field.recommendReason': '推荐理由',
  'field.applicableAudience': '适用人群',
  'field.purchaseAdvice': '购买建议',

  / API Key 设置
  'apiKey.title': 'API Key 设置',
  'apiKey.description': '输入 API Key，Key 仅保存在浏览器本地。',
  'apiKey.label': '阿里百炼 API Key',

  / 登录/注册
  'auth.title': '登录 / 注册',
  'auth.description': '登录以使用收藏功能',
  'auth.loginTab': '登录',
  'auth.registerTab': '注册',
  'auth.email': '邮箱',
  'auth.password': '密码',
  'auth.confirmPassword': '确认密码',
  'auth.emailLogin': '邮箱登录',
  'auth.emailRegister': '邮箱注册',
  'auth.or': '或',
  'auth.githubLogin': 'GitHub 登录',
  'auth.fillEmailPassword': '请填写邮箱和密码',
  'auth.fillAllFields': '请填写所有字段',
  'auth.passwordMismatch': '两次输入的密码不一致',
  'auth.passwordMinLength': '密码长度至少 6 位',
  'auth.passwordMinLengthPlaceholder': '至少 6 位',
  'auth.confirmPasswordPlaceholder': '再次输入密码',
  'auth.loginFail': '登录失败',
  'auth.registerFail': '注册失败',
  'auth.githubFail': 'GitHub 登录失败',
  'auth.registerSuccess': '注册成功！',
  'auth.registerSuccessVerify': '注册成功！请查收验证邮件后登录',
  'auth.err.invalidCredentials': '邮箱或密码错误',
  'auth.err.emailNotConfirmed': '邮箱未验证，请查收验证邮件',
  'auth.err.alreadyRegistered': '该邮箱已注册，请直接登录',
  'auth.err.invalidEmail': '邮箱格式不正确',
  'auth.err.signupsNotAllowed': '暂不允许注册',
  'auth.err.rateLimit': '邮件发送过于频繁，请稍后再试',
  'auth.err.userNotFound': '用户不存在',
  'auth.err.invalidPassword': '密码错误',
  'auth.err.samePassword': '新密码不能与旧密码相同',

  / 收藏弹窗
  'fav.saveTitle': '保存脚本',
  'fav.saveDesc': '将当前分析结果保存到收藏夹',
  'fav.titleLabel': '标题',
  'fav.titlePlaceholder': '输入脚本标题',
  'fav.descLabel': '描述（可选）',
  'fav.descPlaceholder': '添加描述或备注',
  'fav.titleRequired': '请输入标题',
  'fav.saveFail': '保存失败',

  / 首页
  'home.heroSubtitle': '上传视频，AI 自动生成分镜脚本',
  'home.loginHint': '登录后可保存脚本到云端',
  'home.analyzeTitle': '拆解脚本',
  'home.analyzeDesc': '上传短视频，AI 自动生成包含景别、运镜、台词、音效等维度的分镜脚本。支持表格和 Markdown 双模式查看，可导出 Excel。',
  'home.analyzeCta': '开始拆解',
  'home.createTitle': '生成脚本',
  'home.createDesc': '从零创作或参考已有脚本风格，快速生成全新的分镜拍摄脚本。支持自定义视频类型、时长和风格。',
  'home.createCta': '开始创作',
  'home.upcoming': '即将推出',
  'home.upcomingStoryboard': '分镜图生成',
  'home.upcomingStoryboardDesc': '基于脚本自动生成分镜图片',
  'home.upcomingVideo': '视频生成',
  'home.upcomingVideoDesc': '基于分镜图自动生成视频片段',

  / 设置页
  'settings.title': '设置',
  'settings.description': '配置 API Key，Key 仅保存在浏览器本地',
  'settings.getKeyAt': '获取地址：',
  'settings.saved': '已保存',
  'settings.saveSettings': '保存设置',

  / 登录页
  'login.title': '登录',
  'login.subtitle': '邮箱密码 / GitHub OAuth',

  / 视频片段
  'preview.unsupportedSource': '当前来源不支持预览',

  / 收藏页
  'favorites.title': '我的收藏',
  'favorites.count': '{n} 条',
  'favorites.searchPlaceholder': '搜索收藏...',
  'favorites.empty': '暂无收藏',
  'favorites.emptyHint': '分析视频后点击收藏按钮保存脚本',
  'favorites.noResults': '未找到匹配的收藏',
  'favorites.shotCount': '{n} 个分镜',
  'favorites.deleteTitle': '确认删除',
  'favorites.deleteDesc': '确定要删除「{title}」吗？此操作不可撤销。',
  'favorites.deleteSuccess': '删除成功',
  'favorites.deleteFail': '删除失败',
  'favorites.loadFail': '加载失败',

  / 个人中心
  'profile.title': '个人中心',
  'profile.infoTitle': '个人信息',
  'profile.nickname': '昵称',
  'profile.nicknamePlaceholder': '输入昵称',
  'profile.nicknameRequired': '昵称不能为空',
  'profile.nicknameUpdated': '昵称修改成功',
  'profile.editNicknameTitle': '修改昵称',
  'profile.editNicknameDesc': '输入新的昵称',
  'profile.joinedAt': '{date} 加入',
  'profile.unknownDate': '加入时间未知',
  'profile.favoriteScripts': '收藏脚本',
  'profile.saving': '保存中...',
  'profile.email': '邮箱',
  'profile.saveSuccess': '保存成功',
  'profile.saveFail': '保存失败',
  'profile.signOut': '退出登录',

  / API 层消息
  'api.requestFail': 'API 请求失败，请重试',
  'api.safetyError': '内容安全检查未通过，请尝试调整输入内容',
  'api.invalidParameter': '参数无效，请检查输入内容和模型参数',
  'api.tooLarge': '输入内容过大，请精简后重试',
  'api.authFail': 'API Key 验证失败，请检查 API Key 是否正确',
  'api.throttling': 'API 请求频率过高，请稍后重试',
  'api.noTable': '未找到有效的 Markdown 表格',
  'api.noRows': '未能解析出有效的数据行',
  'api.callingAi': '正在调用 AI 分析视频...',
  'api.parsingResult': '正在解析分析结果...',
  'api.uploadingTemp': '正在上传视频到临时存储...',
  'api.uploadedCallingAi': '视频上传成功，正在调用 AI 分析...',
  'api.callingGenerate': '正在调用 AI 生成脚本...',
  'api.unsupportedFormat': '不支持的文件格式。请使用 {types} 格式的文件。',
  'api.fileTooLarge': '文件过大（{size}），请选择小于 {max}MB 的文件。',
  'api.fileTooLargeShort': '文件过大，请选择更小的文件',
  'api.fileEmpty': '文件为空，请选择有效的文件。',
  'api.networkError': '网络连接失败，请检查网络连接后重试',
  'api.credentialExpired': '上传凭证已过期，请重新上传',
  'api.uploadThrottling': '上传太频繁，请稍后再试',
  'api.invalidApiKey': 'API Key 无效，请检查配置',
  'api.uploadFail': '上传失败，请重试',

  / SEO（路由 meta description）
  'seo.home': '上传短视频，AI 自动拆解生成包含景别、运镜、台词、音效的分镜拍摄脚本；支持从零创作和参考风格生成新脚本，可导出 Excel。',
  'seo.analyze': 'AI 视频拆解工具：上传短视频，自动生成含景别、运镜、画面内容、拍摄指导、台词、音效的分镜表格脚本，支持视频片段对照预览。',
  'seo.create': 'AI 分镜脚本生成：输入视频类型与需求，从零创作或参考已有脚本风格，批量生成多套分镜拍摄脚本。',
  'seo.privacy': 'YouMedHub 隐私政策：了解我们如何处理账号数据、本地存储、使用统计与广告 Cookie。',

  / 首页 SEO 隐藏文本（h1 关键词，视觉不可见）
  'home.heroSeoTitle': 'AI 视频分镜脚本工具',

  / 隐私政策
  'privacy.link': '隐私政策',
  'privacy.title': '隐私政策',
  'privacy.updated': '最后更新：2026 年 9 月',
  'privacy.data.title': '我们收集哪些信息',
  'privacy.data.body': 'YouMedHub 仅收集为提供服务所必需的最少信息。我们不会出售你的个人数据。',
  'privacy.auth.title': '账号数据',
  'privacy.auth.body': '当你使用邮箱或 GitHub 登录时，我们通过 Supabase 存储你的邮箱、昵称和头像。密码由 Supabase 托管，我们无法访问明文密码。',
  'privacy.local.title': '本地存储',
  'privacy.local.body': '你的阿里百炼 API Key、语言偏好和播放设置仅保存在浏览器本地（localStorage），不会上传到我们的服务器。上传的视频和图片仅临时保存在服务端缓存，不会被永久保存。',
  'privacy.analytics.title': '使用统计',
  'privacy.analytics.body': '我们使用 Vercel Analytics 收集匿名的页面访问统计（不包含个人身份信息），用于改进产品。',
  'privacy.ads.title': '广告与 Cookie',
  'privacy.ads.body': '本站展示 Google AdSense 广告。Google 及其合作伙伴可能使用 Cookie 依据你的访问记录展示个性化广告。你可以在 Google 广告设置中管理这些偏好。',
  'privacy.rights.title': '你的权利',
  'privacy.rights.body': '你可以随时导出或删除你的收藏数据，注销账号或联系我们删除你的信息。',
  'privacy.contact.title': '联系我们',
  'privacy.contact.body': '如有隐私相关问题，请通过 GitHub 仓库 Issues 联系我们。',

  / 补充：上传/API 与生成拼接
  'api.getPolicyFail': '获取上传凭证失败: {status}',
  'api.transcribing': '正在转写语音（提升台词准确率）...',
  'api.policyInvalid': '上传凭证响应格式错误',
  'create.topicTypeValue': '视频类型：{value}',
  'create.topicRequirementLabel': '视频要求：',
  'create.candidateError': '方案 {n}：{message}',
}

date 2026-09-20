@@ -1,0 +1,57 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { useAdminUsageLogs } from '@/admin/composables/useAdminUsageLogs'
+
+const { usageLogs, loadUsageLogs } = useAdminUsageLogs()
+
+onMounted(() => {
+  loadUsageLogs()
+})
+</script>
+
+<template>
+  <div class="space-y-6">
+    <div>
+      <h1 class="text-2xl font-semibold">使用统计</h1>
+      <p class="text-sm text-muted-foreground">查看模型调用、Token 消耗和失败日志</p>
+    </div>
+
+    <Card>
+      <CardHeader>
+        <CardTitle>调用日志</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="border-b">
+              <tr>
+                <th class="py-3 pr-4">时间</th>
+                <th class="py-3 pr-4">模型</th>
+                <th class="py-3 pr-4">用户</th>
+                <th class="py-3 pr-4">类型</th>
+                <th class="py-3 pr-4">Tokens</th>
+                <th class="py-3 pr-4">状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="log in usageLogs" :key="log.id" class="border-b last:border-b-0">
+                <td class="py-3 pr-4">{{ log.created_at }}</td>
+                <td class="py-3 pr-4">{{ log.model_id }}</td>
+                <td class="py-3 pr-4">{{ log.user_id }}</td>
+                <td class="py-3 pr-4">{{ log.usage_type }}</td>
+                <td class="py-3 pr-4">{{ log.total_tokens }}（{{ log.input_tokens }}/{{ log.output_tokens }}）</td>
+                <td class="py-3 pr-4">
+                  <Badge :variant="log.success ? 'default' : 'destructive'">
+                    {{ log.success ? '成功' : '失败' }}
+                  </Badge>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</template>

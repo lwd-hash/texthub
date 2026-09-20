@@ -1,0 +1,55 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
+import { useAdminUsers } from '@/admin/composables/useAdminUsers'
+
+const { users, loadUsers } = useAdminUsers()
+
+onMounted(() => {
+  loadUsers()
+})
+</script>
+
+<template>
+  <div class="space-y-6">
+    <div>
+      <h1 class="text-2xl font-semibold">用户管理</h1>
+      <p class="text-sm text-muted-foreground">查看用户列表、角色和最近登录状态</p>
+    </div>
+
+    <Card>
+      <CardHeader>
+        <CardTitle>用户列表</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="border-b">
+              <tr>
+                <th class="py-3 pr-4">昵称</th>
+                <th class="py-3 pr-4">邮箱</th>
+                <th class="py-3 pr-4">角色</th>
+                <th class="py-3 pr-4">注册时间</th>
+                <th class="py-3 pr-4">最近活跃</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="user in users" :key="user.id" class="border-b last:border-b-0">
+                <td class="py-3 pr-4 font-medium">{{ user.nickname }}</td>
+                <td class="py-3 pr-4">{{ user.email }}</td>
+                <td class="py-3 pr-4">
+                  <Badge :variant="user.role === 'admin' ? 'default' : 'secondary'">
+                    {{ user.role === 'admin' ? '管理员' : '用户' }}
+                  </Badge>
+                </td>
+                <td class="py-3 pr-4">{{ user.createdAt }}</td>
+                <td class="py-3 pr-4">{{ user.lastSeenAt || '—' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</template>

@@ -1,0 +1,20 @@
+import { ref } from 'vue'
+import type { AdminUsageLog } from '@/admin/types/admin'
+
+const usageLogs = ref<AdminUsageLog[]>([])
+
+export function useAdminUsageLogs() {
+  function loadUsageLogs() {
+    usageLogs.value = [
+      { id: 'log_1', user_id: 'u_1', model_id: 'qwen3.8-omni-flash', provider: 'dashscope', usage_type: 'video_analysis', input_tokens: 1200, output_tokens: 900, total_tokens: 2100, created_at: '2026-09-20 09:20', success: true },
+      { id: 'log_2', user_id: 'u_2', model_id: 'qwen3.8-flash', provider: 'dashscope', usage_type: 'script_create', input_tokens: 800, output_tokens: 700, total_tokens: 1500, created_at: '2026-09-20 08:55', success: true },
+      { id: 'log_3', user_id: 'u_3', model_id: 'qwen3.7-plus', provider: 'dashscope', usage_type: 'script_reference', input_tokens: 600, output_tokens: 500, total_tokens: 1100, created_at: '2026-09-20 08:30', success: false, error_message: 'rate limit' },
+      { id: 'log_4', user_id: 'u_1', model_id: 'qwen3.8-omni-flash', provider: 'dashscope', usage_type: 'video_analysis', input_tokens: 1500, output_tokens: 1000, total_tokens: 2500, created_at: '2026-09-19 21:30', success: true },
+    ]
+  }
+
+  return {
+    usageLogs,
+    loadUsageLogs,
+  }
+}

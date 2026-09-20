@@ -1,0 +1,34 @@
+import { ref } from 'vue'
+import type { AdminStat } from '@/admin/types/admin'
+
+const stats = ref<AdminStat[]>([])
+
+export function useAdminStats() {
+  function loadStats() {
+    stats.value = [
+      { label: '总用户数', value: '1,284', hint: '较上月 +12%' },
+      { label: '生成次数', value: '8,492', hint: '较上月 +18%' },
+      { label: 'AI Token', value: '2.4M', hint: '本月累计' },
+      { label: '收藏脚本', value: '926', hint: '已保存' },
+    ]
+  }
+
+  const recentUsers = [
+    { name: 'Alice', email: 'alice@example.com', role: 'admin', date: '2 小时前' },
+    { name: 'Bob', email: 'bob@example.com', role: 'user', date: '5 小时前' },
+    { name: 'Cathy', email: 'cathy@example.com', role: 'user', date: '1 天前' },
+  ]
+
+  const recentUsage = [
+    { model: 'qwen3.8-omni-flash', count: 126, token: '78k' },
+    { model: 'qwen3.8-flash', count: 98, token: '63k' },
+    { model: 'qwen3.7-plus', count: 42, token: '29k' },
+  ]
+
+  return {
+    stats,
+    recentUsers,
+    recentUsage,
+    loadStats,
+  }
+}
